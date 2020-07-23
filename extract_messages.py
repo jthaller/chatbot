@@ -29,7 +29,7 @@ def collapseSentences(name, data):
                     message_cache += ' ' + data["messages"][i]["content"]
             else:  # data["messages"][i]["sender_name"] != prev_name:
                 # new person, add the cached message
-                conv.append([message_cache])
+                conv.append(message_cache)
                 message_cache = data["messages"][i]["content"]
                 sender = data["messages"][i]["sender_name"]
                 prev_name = sender
@@ -44,41 +44,43 @@ def reverseConversation(conv):
 
 # we need to create conversation pairs with a target: response
 # I might put this in preprocessing instead
-def extractSentence(name, data):
-    qa_pairs = []
-    for block in data["messages"]:
-        try:
-            if block["sender_name"] == name:
-                # print(block["content"])
-                inputLine = block["content"]
-        except KeyError:
-            pass
-        try:
-            if block["sender_name"] == name:
-                targetLine = block["content"]
-        except KeyError:       
-            pass
-        if inputLine and targetLine:
-            qa_pairs.append([inputLine, targetLine])
-    return qa_pairs
+# def extractSentence(name, data):
+#     qa_pairs = []
+#     for block in data["messages"]:
+#         try:
+#             if block["sender_name"] == name:
+#                 # print(block["content"])
+#                 inputLine = block["content"]
+#         except KeyError:
+#             pass
+#         try:
+#             if block["sender_name"] == name:
+#                 targetLine = block["content"]
+#         except KeyError:       
+#             pass
+#         if inputLine and targetLine:
+#             qa_pairs.append([inputLine, targetLine])
+#     return qa_pairs
 
 
-# open file, scrape messages and add to list of lists. 
-# each list is a 
-# Sarah
-with open(sarah_json1, "r") as read_file:
+# ---- Sarah ----- #
+# open file, scrape messages and add to list of lists.
+# each list is a string. contains all the messages sent
+# consecutively by someone
+with open(sarah_json1, "r", encoding="ISO-8859-1") as read_file:
     data = json.load(read_file)
     sentences = collapseSentences(sarah, data)
     sentences = reverseConversation(sentences)
-    print(sentences[:-20])
+    # print(sentences[:20])
 
 # with open(sarah_json2, "r") as read_file:
 #     data = json.load(read_file)
 #     extractSentence(sarah, data)
 
-# # save it as a pickle
-# with open('sarah.pickle', 'wb') as handle:
-#     pickle.dump(messages_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+# save it as a pickle
+with open('sarah.pickle', 'wb') as handle:
+    pickle.dump(sentences, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
 
 # with open('sarah.pickle', 'rb') as handle:
 #     b = pickle.load(handle)
