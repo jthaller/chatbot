@@ -13,7 +13,7 @@ dimensionality = 256
 # Choose the batch size
 # and number of epochs:
 batch_size = 64
-epochs = 40
+epochs = 100
 
 # Encoder training setup
 encoder_inputs = Input(shape=(None, num_encoder_tokens))

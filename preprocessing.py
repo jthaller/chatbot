@@ -6,8 +6,8 @@ from itertools import zip_longest
 
 with open('sarah.pickle', 'rb') as handle:
     corpus = pickle.load(handle)
-    print(corpus[6:10])
-    print('\n')
+    # print(corpus[6:10])
+    # print('\n')
 # clean it up
 lines = [re.sub(r"(?:\@|https?\://)\S+", "", line).strip() for line in corpus]
 lines = [re.sub(r"sarah sent an attachment", "", line).strip() for line in lines]
@@ -47,6 +47,8 @@ pairs = list(grouper(lines, 2))
 
 
 
+# len pairs 2509
+
 # Building empty lists to hold sentences
 input_docs = []
 target_docs = []
@@ -54,7 +56,7 @@ target_docs = []
 input_tokens = set()
 target_tokens = set()
 
-for line in pairs[:15]:
+for line in pairs[500:-1]:
     # Input and target sentences are separated by tabs
     input_doc, target_doc = line[0], line[1]
     # Appending each input sentence to input_docs
