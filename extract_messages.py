@@ -23,12 +23,13 @@ def collapseSentences(name, data):
         prev_name = name
         try:
             if data["messages"][i]["sender_name"] == prev_name:
+                #add punctuation to break up sentences.
                 if message_cache[-1] not in {'.', '!', '?'}:
                     message_cache += '. ' + data["messages"][i]["content"]
-                else:
+                else: #if punctuation present add a space
                     message_cache += ' ' + data["messages"][i]["content"]
             else:  # data["messages"][i]["sender_name"] != prev_name:
-                # new person, add the cached message
+                # new person found, add the cached message
                 conv.append(message_cache)
                 message_cache = data["messages"][i]["content"]
                 sender = data["messages"][i]["sender_name"]
@@ -63,12 +64,23 @@ def reverseConversation(conv):
 #     return qa_pairs
 
 
+def parse_obj(obj):
+    for key in obj:
+        if isinstance(obj[key], str):
+            obj[key] = obj[key].replace('â\x80\x99', "\'") #needed to brute force convert these characters
+            obj[key] = obj[key].replace('\u00e2\u0080\u0099', "\'") #needed to brute force convert these characters
+            obj[key] = obj[key].encode('latin_1').decode('utf-8')
+        elif isinstance(obj[key], list):
+            obj[key] = list(map(lambda x: x if type(x) != str else x.encode('latin_1').decode('utf-8'), obj[key]))
+        pass
+    return obj
+
 # ---- Sarah ----- #
 # open file, scrape messages and add to list of lists.
 # each list is a string. contains all the messages sent
 # consecutively by someone
 with open(sarah_json1, "r", encoding="ISO-8859-1") as read_file:
-    data = json.load(read_file)
+    data = json.load(read_file, object_hook=parse_obj)
     sentences = collapseSentences(sarah, data)
     sentences = reverseConversation(sentences)
     # print(sentences[:20])
