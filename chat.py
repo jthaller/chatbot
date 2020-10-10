@@ -8,10 +8,10 @@ class ChatBot:
     exit_commands = ("quit", "pause", "exit", "goodbye", "bye", "later", "stop")
     
     def start_chat(self):
-        user_response = input("Hi, I'm a chatbot trained on Jeremy's messaging data. Would you like to chat with me?\n")
+        user_response = input("Hi, I'm Jeremybot. Wanna chat with me?\n")
         
         if user_response in self.negative_responses:
-            print("Ok, have a great day!")
+            print("Ok bye")
             return
         
         self.chat(user_response)

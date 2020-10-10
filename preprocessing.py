@@ -14,7 +14,6 @@ lines = [re.sub(r"sarah sent an attachment", "", line).strip() for line in lines
 # lines = [re.sub(r"ð|â", "", line).strip() for line in lines]
 # lines = [re.sub(r"\x80", "", line).strip() for line in corpus]
 
-
 # print(lines)
 
 
